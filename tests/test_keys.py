@@ -1,22 +1,22 @@
-# Copyright (C) 2018-2020 The python-bitcoin-utils developers
+# Copyright (C) 2018-2020 The python-litecoin-utils developers
 #
-# This file is part of python-bitcoin-utils
+# This file is part of python-litecoin-utils
 #
 # It is subject to the license terms in the LICENSE file found in the top-level
 # directory of this distribution.
 #
-# No part of python-bitcoin-utils, including this file, may be copied,
+# No part of python-litecoin-utils, including this file, may be copied,
 # modified, propagated, or distributed except according to the terms contained
 # in the LICENSE file.
 
 
 import unittest
 
-from context import bitcoinutils
-from bitcoinutils.setup import setup, get_network
-from bitcoinutils.keys import PrivateKey, PublicKey, P2pkhAddress, \
+from context import litecoinutils
+from litecoinutils.setup import setup, get_network
+from litecoinutils.keys import PrivateKey, PublicKey, P2pkhAddress, \
         P2shAddress, P2wpkhAddress, P2wshAddress
-from bitcoinutils.script import Script
+from litecoinutils.script import Script
 
 class TestPrivateKeys(unittest.TestCase):
     def setUp(self):

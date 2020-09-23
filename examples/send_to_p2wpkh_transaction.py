@@ -1,20 +1,20 @@
-# Copyright (C) 2018-2020 The python-bitcoin-utils developers
+# Copyright (C) 2018-2020 The python-litecoin-utils developers
 #
-# This file is part of python-bitcoin-utils
+# This file is part of python-litecoin-utils
 #
 # It is subject to the license terms in the LICENSE file found in the top-level
 # directory of this distribution.
 #
-# No part of python-bitcoin-utils, including this file, may be copied,
+# No part of python-litecoin-utils, including this file, may be copied,
 # modified, propagated, or distributed except according to the terms contained
 # in the LICENSE file.
 
 
-from bitcoinutils.setup import setup
-from bitcoinutils.utils import to_satoshis
-from bitcoinutils.transactions import Transaction, TxInput, TxOutput
-from bitcoinutils.keys import P2wpkhAddress, P2pkhAddress, PrivateKey
-from bitcoinutils.script import Script
+from litecoinutils.setup import setup
+from litecoinutils.utils import to_satoshis
+from litecoinutils.transactions import Transaction, TxInput, TxOutput
+from litecoinutils.keys import P2wpkhAddress, P2pkhAddress, PrivateKey
+from litecoinutils.script import Script
 
 def main():
     # always remember to setup the network
@@ -27,7 +27,7 @@ def main():
     txin2 = TxInput('cf4b2987c06b9dd2ba6770af31a4942a4ea3e7194c0d64e8699e9fda03f50551', 1)
 
     # create transaction output using P2WPKH scriptPubKey (locking script)
-    addr = P2wpkhAddress('tb1qlffsz7cgzmyzhklleu97afru7vwjytux4z4zsl')
+    addr = P2wpkhAddress('tltc1qedur7y052upuzd7wzh60d2f86szgpuspmml8ce')
     txout = TxOutput(to_satoshis(0.0019), addr.to_script_pub_key())
     #txout = TxOutput(to_satoshis(0.0019), Script([0, addr.to_hash()]) )
 

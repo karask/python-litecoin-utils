@@ -1,11 +1,11 @@
-# Copyright (C) 2018-2020 The python-bitcoin-utils developers
+# Copyright (C) 2018-2020 The python-litecoin-utils developers
 #
-# This file is part of python-bitcoin-utils
+# This file is part of python-litecoin-utils
 #
 # It is subject to the license terms in the LICENSE file found in the top-level
 # directory of this distribution.
 #
-# No part of python-bitcoin-utils, including this file, may be copied,
+# No part of python-litecoin-utils, including this file, may be copied,
 # modified, propagated, or distributed except according to the terms contained
 # in the LICENSE file.
 
@@ -14,14 +14,14 @@ import hashlib
 import unittest
 from binascii import hexlify, unhexlify
 
-from context import bitcoinutils
-from bitcoinutils.setup import setup
-from bitcoinutils.keys import PrivateKey, P2pkhAddress, P2shAddress, P2wpkhAddress
-from bitcoinutils.constants import SIGHASH_ALL, SIGHASH_NONE, SIGHASH_SINGLE, \
+from context import litecoinutils
+from litecoinutils.setup import setup
+from litecoinutils.keys import PrivateKey, P2pkhAddress, P2shAddress, P2wpkhAddress
+from litecoinutils.constants import SIGHASH_ALL, SIGHASH_NONE, SIGHASH_SINGLE, \
     SIGHASH_ANYONECANPAY, TYPE_RELATIVE_TIMELOCK
-from bitcoinutils.transactions import TxInput, TxOutput, Transaction, Sequence
-from bitcoinutils.script import Script
-from bitcoinutils.utils import to_satoshis
+from litecoinutils.transactions import TxInput, TxOutput, Transaction, Sequence
+from litecoinutils.script import Script
+from litecoinutils.utils import to_satoshis
 
 
 class TestCreateP2wpkhTransaction(unittest.TestCase):

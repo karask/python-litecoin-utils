@@ -1,23 +1,23 @@
-# Copyright (C) 2018-2020 The python-bitcoin-utils developers
+# Copyright (C) 2018-2020 The python-litecoin-utils developers
 #
-# This file is part of python-bitcoin-utils
+# This file is part of python-litecoin-utils
 #
 # It is subject to the license terms in the LICENSE file found in the top-level
 # directory of this distribution.
 #
-# No part of python-bitcoin-utils, including this file, may be copied,
+# No part of python-litecoin-utils, including this file, may be copied,
 # modified, propagated, or distributed except according to the terms contained
 # in the LICENSE file.
 
 
 import unittest
 
-from context import bitcoinutils
-from bitcoinutils.setup import setup
-from bitcoinutils.utils import to_satoshis
-from bitcoinutils.keys import PrivateKey, P2pkhAddress, P2shAddress
-from bitcoinutils.transactions import TxInput, TxOutput, Transaction
-from bitcoinutils.script import Script
+from context import litecoinutils
+from litecoinutils.setup import setup
+from litecoinutils.utils import to_satoshis
+from litecoinutils.keys import PrivateKey, P2pkhAddress, P2shAddress
+from litecoinutils.transactions import TxInput, TxOutput, Transaction
+from litecoinutils.script import Script
 
 class TestCreateP2shTransaction(unittest.TestCase):
     def setUp(self):

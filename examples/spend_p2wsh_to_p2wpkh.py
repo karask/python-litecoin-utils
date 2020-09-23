@@ -1,20 +1,19 @@
-# Copyright (C) 2018-2020 The python-bitcoin-utils developers
+# Copyright (C) 2018-2020 The python-litecoin-utils developers
 #
-# This file is part of python-bitcoin-utils
+# This file is part of python-litecoin-utils
 #
 # It is subject to the license terms in the LICENSE file found in the top-level
 # directory of this distribution.
 #
-# No part of python-bitcoin-utils, including this file, may be copied,
+# No part of python-litecoin-utils, including this file, may be copied,
 # modified, propagated, or distributed except according to the terms contained
 # in the LICENSE file.
 
-from bitcoinutils.setup import setup
-from bitcoinutils.utils import to_satoshis
-from bitcoinutils.transactions import Transaction, TxInput, TxOutput, Sequence
-from bitcoinutils.keys import P2pkhAddress, P2shAddress, PrivateKey, P2wshAddress, P2wpkhAddress
-from bitcoinutils.script import Script
-from bitcoinutils.constants import TYPE_RELATIVE_TIMELOCK
+from litecoinutils.setup import setup
+from litecoinutils.utils import to_satoshis
+from litecoinutils.transactions import Transaction, TxInput, TxOutput
+from litecoinutils.keys import PrivateKey, P2wshAddress, P2wpkhAddress
+from litecoinutils.script import Script
 
 
 def main():
@@ -29,7 +28,7 @@ def main():
 
     fromAddress = P2wshAddress.from_script(p2wsh_witness_script)
 
-    toAddress = P2wpkhAddress.from_address("tb1qtstf97nhk2gycz7vl37esddjpxwt3ut30qp5pn")
+    toAddress = P2wpkhAddress.from_address("tltc1qedur7y052upuzd7wzh60d2f86szgpuspmml8ce")
 
     # set values
     txid = '2042195c40a92353f2ffe30cd0df8d177698560e81807e8bf9174a9c0e98e6c2'

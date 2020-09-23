@@ -1,7 +1,4 @@
-DEFAULT
-- all code is based on python-bitcoin-utils
-
-TESTS & EXAMPLES
-- all tests and examples are still based on the Bitcoin code... need to refactor
-
+TODO
+* since all code is forked from python-bitcoin-utils some of the tests using legacy Bitcoin addresses fail for Litecoin 
+  - need to re-create for litecoin (tests/test_keys.py)
 

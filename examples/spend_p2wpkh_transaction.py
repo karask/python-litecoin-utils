@@ -20,7 +20,7 @@ def main():
     setup('testnet')
 
     # the key that corresponds to the P2WPKH address
-    priv = PrivateKey("cQQB9SYxT2gmT9TkVnyZNDvjEeheDoAXskPDhkhAh2d3RfoHxF2J")
+    priv = PrivateKey("cVdte9ei2xsVjmZSPtyucG43YZgNkmKTqhwiUA8M4Fc3LdPJxPmZ")
 
     pub = priv.get_public_key()
 
@@ -28,14 +28,13 @@ def main():
     print(fromAddress.to_string())
 
     # amount is needed to sign the segwit input
-    fromAddressAmount = to_satoshis(0.95)
+    fromAddressAmount = to_satoshis(0.01)
 
     # UTXO of fromAddress
-    txid = 'e66a7a9cb04c57a2be1ce44306ccc8a58d48e3d831bc232567180eb7536ef8ea'
-    vout = 1
+    txid = '13d2d30eca974e8fa5da11b9608fa36905a22215e8df895e767fc903889367ff'
+    vout = 0
 
-    # change to same address
-    toAddress = fromAddress
+    toAddress = P2pkhAddress('mrrKUpJnAjvQntPgz2Z4kkyr1gbtHmQv28')
 
     # create transaction input from tx id of UTXO
     txin = TxInput(txid, vout)
@@ -45,15 +44,11 @@ def main():
                           'OP_EQUALVERIFY', 'OP_CHECKSIG'])
 
     # create transaction output
-    txOut = TxOutput(to_satoshis(0.949), toAddress.to_script_pub_key())
+    txOut = TxOutput(to_satoshis(0.009), toAddress.to_script_pub_key())
 
-    # op_return
-    op_return_cert_protocol = '1234567890'
-    op_return_output = TxOutput(to_satoshis(0), Script(['OP_RETURN',
-                                                        op_return_cert_protocol]))
     # create transaction without change output - if at least a single input is
     # segwit we need to set has_segwit=True
-    tx = Transaction([txin], [txOut, op_return_output], has_segwit=True)
+    tx = Transaction([txin], [txOut], has_segwit=True)
 
     print("\nRaw transaction:\n" + tx.serialize())
 
