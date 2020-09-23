@@ -1,7 +1,7 @@
 python-litecoin-utils
 =====================
 
-This is a litecoin library that provides tools/utilities to interact with the Litecoin network and it is based on python-bitcoin-utils library. One of the primary goals of the library is to explain the low-level details of Litecoin. The code is easy to read and properly documented explaining in detail all the thorny aspects of the implementation. It is a low-level library which assumes some high-level understanding of how Litecoin works. In the future this might change.
+This is a litecoin library that provides tools/utilities to interact with the Litecoin network and it is based on `a python-bitcoin-utils` library. One of the primary goals of the library is to explain the low-level details of Litecoin. The code is easy to read and properly documented explaining in detail all the thorny aspects of the implementation. It is a low-level library which assumes some high-level understanding of how Litecoin works. In the future this might change.
 
 This is an early version of the library (v0.4.9) and currently, it supports private/public keys, all type of addresses and creation of any transaction (incl. segwit) with all SIGHASH types. All script op codes are included. Timelock and non-standanrd transactions are supported. It does not currently support the new M and Q addresses. Currently, a simple node proxy exists to enable easy calls to a Litecoin core node. Extra functionality will be added continuously and the documentation will be improved as the work progresses.
 
@@ -57,3 +57,5 @@ Use NodeProxy to make calls to a Litecoin node
   https://github.com/karask/python-litecoin-utils/blob/master/examples/node_proxy.py - make Litecoin command-line interface calls programmatically (NodeProxy wraps jsonrpc-requests library)
 
 Please explore the codebase or the API documentation (LitecoinUtilities.pdf) for supported functionality and other options.
+
+.. _a link: https://github.com/karask/python-bitcoin-utils
