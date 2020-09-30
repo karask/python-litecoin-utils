@@ -9,7 +9,7 @@
 # propagated, or distributed except according to the terms contained in the
 # LICENSE file.
 
-from litecoinrpc.authproxy import AuthServiceProxy
+from bitcoinrpc.authproxy import AuthServiceProxy
 
 from litecoinutils.setup import get_network
 from litecoinutils.constants import NETWORK_DEFAULT_PORTS

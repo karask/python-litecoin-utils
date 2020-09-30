@@ -23,7 +23,7 @@ setup(name='litecoin-utils',
           'base58check==1.0.2',
           'ecdsa==0.13.3',
           'sympy==1.3',
-          "litecoinrpc @ git+git://github.com/bitwyre/python-litecoinrpc@f9deb63",
+          'python-bitcoinrpc==1.0'
       ],
       packages=['litecoinutils'],
       #package_data={
