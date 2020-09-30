@@ -47,3 +47,13 @@ def prepend_compact_size(data):
     return prefix + data
 
 
+'''
+Returns if an address (string) is bech32 or not
+TODO improve by checking if valid, etc.
+'''
+def is_address_bech32(address):
+    if (address.startswith('ltc') or
+        address.startswith('tltc')):
+        return True
+
+    return False
