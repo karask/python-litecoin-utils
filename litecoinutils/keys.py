@@ -60,7 +60,7 @@ _G = ellipticcurve.Point( _curve, _Gx, _Gy, _order )
 
 # method used by both PrivateKey and PublicKey - TODO clean - add in another module?
 def add_magic_prefix(message):
-    magic_prefix = b'\x18Bitcoin Signed Message:\n'
+    magic_prefix = b'\x19Litecoin Signed Message:\n'
     message_size = len(message).to_bytes(1, byteorder='big')
     message_encoded = message.encode('utf-8')
     message_magic = magic_prefix + message_size + message_encoded
@@ -214,7 +214,7 @@ class PrivateKey:
         """
 
         # All litecoin signatures include the magic prefix. It is just a string
-        # added to the message to distinguish Bitcoin-specific messages.
+        # added to the message to distinguish Litecoin-specific messages.
         message_magic = add_magic_prefix(message)
 
         # create message digest -- note double hashing
@@ -572,7 +572,7 @@ class PublicKey:
         corresponding private key."""
 
         # All litecoin signatures include the magic prefix. It is just a string
-        # added to the message to distinguish Bitcoin-specific messages.
+        # added to the message to distinguish Litecoin-specific messages.
         message_magic = add_magic_prefix(message)
 
         # create message digest -- note double hashing
