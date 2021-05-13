@@ -22,7 +22,7 @@ from litecoinutils.constants import DEFAULT_TX_SEQUENCE, DEFAULT_TX_LOCKTIME, \
                     TYPE_ABSOLUTE_TIMELOCK, TYPE_RELATIVE_TIMELOCK, \
                     TYPE_REPLACE_BY_FEE, SATOSHIS_PER_BITCOIN
 from litecoinutils.script import Script
-
+from litecoinutils.utils import to_bytes, vi_to_int
 
 class TxInput:
     """Represents a transaction input.
@@ -94,6 +94,23 @@ class TxInput:
     
     def __repr__(self):
         return self.__str__()
+
+    @staticmethod
+    def import_from_raw(txinputraw, cursor=0):
+        txinputraw = to_bytes(txinputraw)
+        inp_hash = txinputraw[cursor:cursor + 32][::-1]
+        if not len(inp_hash):
+            raise Exception("Input transaction hash not found. Probably malformed raw transaction")
+        output_n = txinputraw[cursor + 32:cursor + 36][::-1]
+        cursor += 36
+        unlocking_script_size, size = vi_to_int(txinputraw[cursor:cursor + 9])
+        cursor += size
+        unlocking_script = txinputraw[cursor:cursor + unlocking_script_size]
+        cursor += unlocking_script_size
+        sequence_number = txinputraw[cursor:cursor + 4]
+        cursor += 4
+        return TxInput(txid = inp_hash.hex(), txout_index=int(output_n.hex(), 16), script_sig=unlocking_script, sequence=sequence_number),cursor
+
 
     @classmethod
     def copy(cls, txin):
