@@ -138,8 +138,7 @@ OP_CODES = {
     'OP_CHECKSEQUENCEVERIFY': b'\xb2'
 }
 
-
-OP_CODES = {
+CODE_OPS = {
     # constants
     b'\x00':    'OP_0'                  , 
     b'\x00':    'OP_FALSE'              , 
@@ -280,6 +279,11 @@ class Script:
         scripts = copy.deepcopy(script.script)
         return cls(scripts)
 
+    def __str__(self):
+        return str(self.script)
+
+    def __repr__(self):
+        return self.__str__()
 
     def _op_push_data(self, data):
         """Converts data to appropriate OP_PUSHDATA OP code including length

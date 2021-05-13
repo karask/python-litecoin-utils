@@ -85,6 +85,15 @@ class TxInput:
                 script_sig_bytes + self.sequence
         return data
 
+    def __str__(self):
+        return str({
+            "txid": self.txid,
+            "txout_index": self.txout_index,
+            "script_sig": self.script_sig
+        })
+    
+    def __repr__(self):
+        return self.__str__()
 
     @classmethod
     def copy(cls, txin):
@@ -135,6 +144,14 @@ class TxOutput:
         data = amount_bytes + struct.pack('B', len(script_bytes)) + script_bytes
         return data
 
+    def __str__(self):
+        return str({
+            "amount": self.amount,
+            "script_pubkey": self.script_pubkey
+        })
+
+    def __repr__(self):
+        return self.__str__()
 
     @classmethod
     def copy(cls, txout):
