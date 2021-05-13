@@ -323,6 +323,19 @@ class Transaction:
         self.version = version
 
 
+    def __str__(self):
+        return str({
+                "inputs": self.inputs,
+                "outputs": self.outputs,
+                "has_segwit": self.has_segwit,
+                "witnesses": self.witnesses,
+                "locktime": self.locktime.hex(),
+                "version": self.version.hex()
+                })
+
+    def __repr__(self):
+        return self.__str__()
+
     @classmethod
     def copy(cls, tx):
         """Deep copy of Transaction"""
