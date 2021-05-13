@@ -161,6 +161,20 @@ class TxOutput:
         data = amount_bytes + struct.pack('B', len(script_bytes)) + script_bytes
         return data
 
+
+    @staticmethod
+    def import_from_raw(txoutputraw,cursor=0):
+        txoutputraw = to_bytes(txoutputraw)
+        value = int.from_bytes(txoutputraw[cursor:cursor + 8][::-1], 'big')
+        cursor += 8
+        lock_script_size, size = vi_to_int(txoutputraw[cursor:cursor + 9])
+        cursor += size
+        lock_script = txoutputraw[cursor:cursor + lock_script_size]
+        cursor += lock_script_size
+        return TxOutput(amount=value, script_pubkey=lock_script),cursor
+
+
+
     def __str__(self):
         return str({
             "amount": self.amount,
