@@ -12,7 +12,7 @@
 import struct
 import copy
 import hashlib
-from litecoinutils.utils import prepend_compact_size
+from litecoinutils.utils import prepend_compact_size, to_bytes
 from binascii import unhexlify, hexlify
 
 import litecoinutils.keys
@@ -381,6 +381,25 @@ class Script:
 
         return script_bytes
 
+    @staticmethod
+    def import_from_raw(scriptraw):
+        scriptraw = to_bytes(scriptraw)
+        commands = []
+        index = 0
+        while index < len(scriptraw):
+            byte = scriptraw[index]
+            if bytes([byte]) in CODE_OPS:
+                commands.append(CODE_OPS[bytes([byte])])
+                index = index + 1
+            elif bytes([byte]) >= b'\x51' and bytes([byte]) <= b'\x60':
+                commands.append("OP_" + str(bytes([byte]) - b'\x50'))
+                index = index + 1
+            else:
+                commands.append(scriptraw[index+1: index + 1 + byte].hex())
+                index = index + byte + 1
+
+
+        return Script(script=commands)
 
     def to_hex(self):
         """Converts the script to hexadecimal"""
