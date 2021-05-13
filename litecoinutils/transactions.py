@@ -109,7 +109,7 @@ class TxInput:
         cursor += unlocking_script_size
         sequence_number = txinputraw[cursor:cursor + 4]
         cursor += 4
-        return TxInput(txid = inp_hash.hex(), txout_index=int(output_n.hex(), 16), script_sig=unlocking_script, sequence=sequence_number),cursor
+        return TxInput(txid = inp_hash.hex(), txout_index=int(output_n.hex(), 16), script_sig=Script.import_from_raw(unlocking_script), sequence=sequence_number),cursor
 
 
     @classmethod
@@ -171,7 +171,7 @@ class TxOutput:
         cursor += size
         lock_script = txoutputraw[cursor:cursor + lock_script_size]
         cursor += lock_script_size
-        return TxOutput(amount=value, script_pubkey=lock_script),cursor
+        return TxOutput(amount=value, script_pubkey=Script.import_from_raw(lock_script)),cursor
 
 
 
@@ -352,6 +352,51 @@ class Transaction:
             self.locktime = locktime
 
         self.version = version
+
+
+    @staticmethod
+    def import_from_raw(txraw):
+        rawtx = to_bytes(txraw)
+        version = rawtx[0:4][::-1]
+        flag = None
+        has_segwit = False
+        cursor = 4
+        if rawtx[4:5] == b'\0':
+            flag = rawtx[5:6]
+            if flag == b'\1':
+                has_segwit = True
+            cursor += 2
+        n_inputs, size = vi_to_int(rawtx[cursor:cursor + 9])
+        cursor += size
+        inputs = []
+        for index in range(0,n_inputs):
+            inp, cursor = TxInput.import_from_raw(rawtx, cursor)
+            inputs.append(inp)
+        
+        outputs = []
+        n_outputs, size = vi_to_int(rawtx[cursor:cursor + 9])
+        cursor += size
+        output_total = 0
+        for index in range(0,n_outputs):
+            output, cursor = TxOutput.import_from_raw(rawtx, cursor)
+            outputs.append(output)
+
+        witnesses = []
+        if has_segwit == True:
+            for n in range(0, len(inputs)):
+                n_items, size = vi_to_int(rawtx[cursor:cursor + 9])
+                cursor += size
+                for m in range(0, n_items):
+                    witness = b'\0'
+                    item_size, size = vi_to_int(rawtx[cursor:cursor + 9])
+                    if item_size:
+                        witness = rawtx[cursor + size:cursor + item_size + size]
+                    cursor += item_size + size
+                    witnesses.append(witness.hex())
+
+        return Transaction(inputs = inputs, outputs = outputs, has_segwit = has_segwit, witnesses = witnesses)
+
+
 
 
     def __str__(self):
