@@ -12,7 +12,7 @@
 import struct
 import copy
 import hashlib
-from litecoinutils.utils import prepend_compact_size, to_bytes
+from litecoinutils.utils import prepend_compact_size, to_bytes, vi_to_int
 from binascii import unhexlify, hexlify
 
 import litecoinutils.keys
@@ -141,13 +141,11 @@ OP_CODES = {
 CODE_OPS = {
     # constants
     b'\x00':    'OP_0'                  , 
-    b'\x00':    'OP_FALSE'              , 
     b'\x4c':    'OP_PUSHDATA1'          , 
     b'\x4d':    'OP_PUSHDATA2'          , 
     b'\x4e':    'OP_PUSHDATA4'          , 
     b'\x4f':    'OP_1NEGATE'            , 
     b'\x51':    'OP_1'                  , 
-    b'\x51':    'OP_TRUE'               , 
     b'\x52':    'OP_2'                  , 
     b'\x53':    'OP_3'                  , 
     b'\x54':    'OP_4'                  , 
@@ -382,7 +380,7 @@ class Script:
         return script_bytes
 
     @staticmethod
-    def import_from_raw(scriptraw):
+    def import_from_raw(scriptraw, has_segwit=False):
         scriptraw = to_bytes(scriptraw)
         commands = []
         index = 0
@@ -391,12 +389,25 @@ class Script:
             if bytes([byte]) in CODE_OPS:
                 commands.append(CODE_OPS[bytes([byte])])
                 index = index + 1
-            elif bytes([byte]) >= b'\x51' and bytes([byte]) <= b'\x60':
-                commands.append("OP_" + str(bytes([byte]) - b'\x50'))
+            elif has_segwit == False and bytes([byte]) == b'\x4c':
+                bytes_to_read = int.from_bytes(scriptraw[index + 1], "little")
                 index = index + 1
+                commands.append(scriptraw[index: index + bytes_to_read].hex())
+                index = index + bytes_to_read
+            elif has_segwit == False and bytes([byte]) == b'\x4d':
+                bytes_to_read = int.from_bytes(scriptraw[index:index + 2], "little")
+                index = index + 2
+                commands.append(scriptraw[index: index + bytes_to_read].hex())
+                index = index + bytes_to_read
+            elif has_segwit == False and bytes([byte]) == b'\x4e':
+                bytes_to_read = int.from_bytes(scriptraw[index:index + 4], "little")
+                index = index + 4
+                commands.append(scriptraw[index: index + bytes_to_read].hex())
+                index = index + bytes_to_read
             else:
-                commands.append(scriptraw[index+1: index + 1 + byte].hex())
-                index = index + byte + 1
+                data_size, size = vi_to_int(scriptraw[index:index + 9])
+                commands.append(scriptraw[index + size:index + size + data_size].hex())
+                index = index + data_size + size
 
 
         return Script(script=commands)
