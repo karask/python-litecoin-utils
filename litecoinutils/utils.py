@@ -75,6 +75,9 @@ def vi_to_int(byteint):
 
 
 def to_bytes(string, unhexlify=True):
+    '''
+	Converts a hex string to bytes
+    '''
     if not string:
         return b''
     if unhexlify:
