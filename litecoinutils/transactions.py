@@ -429,13 +429,15 @@ class Transaction:
             for n in range(0, len(inputs)):
                 n_items, size = vi_to_int(rawtx[cursor:cursor + 9])
                 cursor += size
+                witnesses_tmp = []
                 for m in range(0, n_items):
                     witness = b'\0'
                     item_size, size = vi_to_int(rawtx[cursor:cursor + 9])
                     if item_size:
                         witness = rawtx[cursor + size:cursor + item_size + size]
                     cursor += item_size + size
-                    witnesses.append(witness.hex())
+                    witnesses_tmp.append(witness.hex())
+                witnesses.append(witnesses_tmp)
 
         return Transaction(inputs = inputs, outputs = outputs, has_segwit = has_segwit, witnesses = witnesses)
 
