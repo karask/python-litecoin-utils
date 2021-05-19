@@ -14,23 +14,25 @@ from litecoinutils.constants import SATOSHIS_PER_BITCOIN
 
 
 
-'''
-Converts from any number type (int/float/Decimal) to satoshis (int)
-'''
 def to_satoshis(num):
+    '''
+    Converts from any number type (int/float/Decimal) to satoshis (int)
+    '''
+
     # we need to round because of how floats are stored insternally:
     # e.g. 0.29 * 100000000 = 28999999.999999996
     return int( round(num * SATOSHIS_PER_BITCOIN) )
 
 
-'''
-Counts bytes and returns them with their compact size (or varint) prepended.
-Accepts bytes and returns bytes. The length should be specified in
-little-endian (which is why we reverse the array bytes).
-
-https://bitcoin.org/en/developer-reference#compactsize-unsigned-integers
-'''
 def prepend_compact_size(data):
+    '''
+    Counts bytes and returns them with their compact size (or varint) prepended.
+    Accepts bytes and returns bytes. The length should be specified in
+    little-endian (which is why we reverse the array bytes).
+
+    https://bitcoin.org/en/developer-reference#compactsize-unsigned-integers
+    '''
+
     prefix = b''
     size = len(data)
     if size >= 0 and size <= 252:
@@ -47,11 +49,11 @@ def prepend_compact_size(data):
     return prefix + data
 
 
-'''
-Returns if an address (string) is bech32 or not
-TODO improve by checking if valid, etc.
-'''
 def is_address_bech32(address):
+    '''
+    Returns if an address (string) is bech32 or not
+    TODO improve by checking if valid, etc.
+    '''
     if (address.startswith('ltc') or
         address.startswith('tltc')):
         return True
@@ -59,7 +61,11 @@ def is_address_bech32(address):
     return False
 
 
+
 def vi_to_int(byteint):
+    '''
+    Converts var_int (bytes) to int
+    '''
     if not isinstance(byteint, (bytes)):
         raise Exception("Byteint must be a list or defined as bytes")
     ni = byteint[0]
