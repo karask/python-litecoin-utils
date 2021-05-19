@@ -131,8 +131,7 @@ class TxInput:
         cursor += 4
         return TxInput(txid = inp_hash.hex(),
                        txout_index=int(output_n.hex(), 16),
-                       script_sig=Script.import_from_raw(unlocking_script,has_segwit=has_segwit), sequence=sequence_number),
-        cursor
+                       script_sig=Script.import_from_raw(unlocking_script,has_segwit=has_segwit), sequence=sequence_number),cursor
 
 
     @classmethod
@@ -212,8 +211,7 @@ class TxOutput:
         lock_script = txoutputraw[cursor:cursor + lock_script_size]
         cursor += lock_script_size
         return TxOutput(amount=value,
-                        script_pubkey=Script.import_from_raw(lock_script, has_segwit=has_segwit)),
-        cursor
+                        script_pubkey=Script.import_from_raw(lock_script, has_segwit=has_segwit)),cursor
 
 
 
