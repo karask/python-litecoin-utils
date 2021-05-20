@@ -98,7 +98,7 @@ class TxInput:
 
 
     @staticmethod
-    def import_from_raw(txinputraw, cursor=0, has_segwit=False):
+    def from_raw(txinputraw, cursor=0, has_segwit=False):
         """
         Imports a TxInput from a Transaction's hexadecimal data
 
@@ -131,7 +131,7 @@ class TxInput:
         cursor += 4
         return TxInput(txid = inp_hash.hex(),
                        txout_index=int(output_n.hex(), 16),
-                       script_sig=Script.import_from_raw(unlocking_script,has_segwit=has_segwit), sequence=sequence_number),cursor
+                       script_sig=Script.from_raw(unlocking_script,has_segwit=has_segwit), sequence=sequence_number),cursor
 
 
     @classmethod
@@ -185,7 +185,7 @@ class TxOutput:
 
 
     @staticmethod
-    def import_from_raw(txoutputraw,cursor=0,has_segwit=False):
+    def from_raw(txoutputraw,cursor=0,has_segwit=False):
         """
         Imports a TxOutput from a Transaction's hexadecimal data
 
@@ -211,7 +211,7 @@ class TxOutput:
         lock_script = txoutputraw[cursor:cursor + lock_script_size]
         cursor += lock_script_size
         return TxOutput(amount=value,
-                        script_pubkey=Script.import_from_raw(lock_script, has_segwit=has_segwit)),cursor
+                        script_pubkey=Script.from_raw(lock_script, has_segwit=has_segwit)),cursor
 
 
 
@@ -396,7 +396,7 @@ class Transaction:
 
 
     @staticmethod
-    def import_from_raw(txraw):
+    def from_raw(txraw):
         """
         Imports a Transaction from hexadecimal data
 
@@ -431,7 +431,7 @@ class Transaction:
 
         #iterate n_inputs times to read the inputs from raw
         for index in range(0,n_inputs):
-            inp, cursor = TxInput.import_from_raw(rawtx, cursor=cursor, has_segwit=has_segwit)
+            inp, cursor = TxInput.from_raw(rawtx, cursor=cursor, has_segwit=has_segwit)
             inputs.append(inp)
 
         outputs = []
@@ -443,7 +443,7 @@ class Transaction:
 
         # iterate n_outputs times to read the inputs from raw
         for index in range(0,n_outputs):
-            output, cursor = TxOutput.import_from_raw(rawtx, cursor=cursor, has_segwit=has_segwit)
+            output, cursor = TxOutput.from_raw(rawtx, cursor=cursor, has_segwit=has_segwit)
             outputs.append(output)
 
         witnesses = []
