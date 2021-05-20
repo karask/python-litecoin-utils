@@ -460,7 +460,7 @@ class Transaction:
                         witness = rawtx[cursor + size:cursor + item_size + size]
                     cursor += item_size + size
                     witnesses_tmp.append(witness.hex())
-                witnesses.append(witnesses_tmp)
+                witnesses.append(Script(script=witnesses_tmp))
 
         return Transaction(inputs = inputs,
                            outputs = outputs,
