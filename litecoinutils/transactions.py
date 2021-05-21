@@ -98,7 +98,7 @@ class TxInput:
 
 
     @staticmethod
-    def import_from_raw(txinputraw, cursor=0, has_segwit=False):
+    def from_raw(txinputraw, cursor=0, has_segwit=False):
         """
         Imports a TxInput from a Transaction's hexadecimal data
 
@@ -131,8 +131,7 @@ class TxInput:
         cursor += 4
         return TxInput(txid = inp_hash.hex(),
                        txout_index=int(output_n.hex(), 16),
-                       script_sig=Script.import_from_raw(unlocking_script,has_segwit=has_segwit), sequence=sequence_number),
-        cursor
+                       script_sig=Script.from_raw(unlocking_script,has_segwit=has_segwit), sequence=sequence_number),cursor
 
 
     @classmethod
@@ -186,7 +185,7 @@ class TxOutput:
 
 
     @staticmethod
-    def import_from_raw(txoutputraw,cursor=0,has_segwit=False):
+    def from_raw(txoutputraw,cursor=0,has_segwit=False):
         """
         Imports a TxOutput from a Transaction's hexadecimal data
 
@@ -212,8 +211,7 @@ class TxOutput:
         lock_script = txoutputraw[cursor:cursor + lock_script_size]
         cursor += lock_script_size
         return TxOutput(amount=value,
-                        script_pubkey=Script.import_from_raw(lock_script, has_segwit=has_segwit)),
-        cursor
+                        script_pubkey=Script.from_raw(lock_script, has_segwit=has_segwit)),cursor
 
 
 
@@ -380,9 +378,18 @@ class Transaction:
         according to sighash
     """
 
-    def __init__(self, inputs=[], outputs=[], locktime=DEFAULT_TX_LOCKTIME,
-                 version=DEFAULT_TX_VERSION, has_segwit=False, witnesses=[]):
+    def __init__(self, inputs=None, outputs=None, locktime=DEFAULT_TX_LOCKTIME,
+                 version=DEFAULT_TX_VERSION, has_segwit=False, witnesses=None):
         """See Transaction description"""
+
+        # make sure default argument for inputs, outputs and witnesses is an empty list
+        if inputs is None:
+            inputs = []
+        if outputs is None:
+            outputs = []
+        if witnesses is None:
+            witnesses = []
+
         self.inputs = inputs
         self.outputs = outputs
         self.has_segwit = has_segwit
@@ -398,7 +405,7 @@ class Transaction:
 
 
     @staticmethod
-    def import_from_raw(txraw):
+    def from_raw(txraw):
         """
         Imports a Transaction from hexadecimal data
 
@@ -433,7 +440,7 @@ class Transaction:
 
         #iterate n_inputs times to read the inputs from raw
         for index in range(0,n_inputs):
-            inp, cursor = TxInput.import_from_raw(rawtx, cursor=cursor, has_segwit=has_segwit)
+            inp, cursor = TxInput.from_raw(rawtx, cursor=cursor, has_segwit=has_segwit)
             inputs.append(inp)
 
         outputs = []
@@ -445,7 +452,7 @@ class Transaction:
 
         # iterate n_outputs times to read the inputs from raw
         for index in range(0,n_outputs):
-            output, cursor = TxOutput.import_from_raw(rawtx, cursor=cursor, has_segwit=has_segwit)
+            output, cursor = TxOutput.from_raw(rawtx, cursor=cursor, has_segwit=has_segwit)
             outputs.append(output)
 
         witnesses = []
@@ -462,7 +469,7 @@ class Transaction:
                         witness = rawtx[cursor + size:cursor + item_size + size]
                     cursor += item_size + size
                     witnesses_tmp.append(witness.hex())
-                witnesses.append(witnesses_tmp)
+                witnesses.append(Script(script=witnesses_tmp))
 
         return Transaction(inputs = inputs,
                            outputs = outputs,
