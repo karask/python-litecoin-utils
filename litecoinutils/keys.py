@@ -67,7 +67,7 @@ _G = ellipticcurve.Point( _curve, _Gx, _Gy, _order )
 
 
 # method used by both PrivateKey and PublicKey - TODO clean - add in another module?
-def add_magic_prefix_v2(message):
+def add_magic_prefix(message):
     magic_prefix = b"\x19Litecoin Signed Message:\n"
     message_size = encode_varint(len(message))
     message_encoded = message.encode("utf-8")
