@@ -10,8 +10,8 @@
 # LICENSE file.
 
 from binascii import hexlify, unhexlify
-from litecoinutils.constants import SATOSHIS_PER_BITCOIN
 
+from litecoinutils.constants import SATOSHIS_PER_BITCOIN
 
 
 def to_satoshis(num):
@@ -23,6 +23,22 @@ def to_satoshis(num):
     # e.g. 0.29 * 100000000 = 28999999.999999996
     return int( round(num * SATOSHIS_PER_BITCOIN) )
 
+def encode_varint(i):
+    '''
+    Encode a potentially very large integer into varint bytes. The length should be
+    specified in little-endian.
+    https://bitcoin.org/en/developer-reference#compactsize-unsigned-integers
+    '''
+    if i < 253:
+        return bytes([i])
+    elif i < 0x10000:
+        return b'\xfd' +  i.to_bytes(2, 'little')
+    elif i < 0x100000000:
+        return b'\xfe' +  i.to_bytes(4, 'little')
+    elif i < 0x10000000000000000:
+        return b'\xff' +  i.to_bytes(8, 'little')
+    else:
+        raise ValueError("Integer is too large: %d" % i)
 
 def prepend_compact_size(data):
     '''

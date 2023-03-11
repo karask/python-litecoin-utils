@@ -9,25 +9,33 @@
 # propagated, or distributed except according to the terms contained in the
 # LICENSE file.
 
+import hashlib
 import re
 import struct
-import hashlib
 from abc import ABC, abstractmethod
-from base64 import b64encode, b64decode
-from binascii import unhexlify, hexlify
-from base58check import b58encode, b58decode
-from ecdsa import SigningKey, VerifyingKey, SECP256k1, ellipticcurve, numbertheory
-from ecdsa.util import sigencode_string, sigdecode_string, sigencode_der
+from base64 import b64decode, b64encode
+from binascii import hexlify, unhexlify
+
+from base58check import b58decode, b58encode
+from ecdsa import SECP256k1, SigningKey, VerifyingKey, ellipticcurve, numbertheory
+from ecdsa.util import sigdecode_string, sigencode_der, sigencode_string
 from sympy.ntheory import sqrt_mod
 
-from litecoinutils.constants import NETWORK_WIF_PREFIXES, \
-        NETWORK_P2PKH_PREFIXES, NETWORK_P2SH_PREFIXES, SIGHASH_ALL, \
-        P2PKH_ADDRESS, P2SH_ADDRESS, P2WPKH_ADDRESS_V0, P2WSH_ADDRESS_V0, \
-        NETWORK_SEGWIT_PREFIXES
-from litecoinutils.setup import get_network
 import litecoinutils.bech32
 import litecoinutils.script
-
+from litecoinutils.constants import (
+    NETWORK_P2PKH_PREFIXES,
+    NETWORK_P2SH_PREFIXES,
+    NETWORK_SEGWIT_PREFIXES,
+    NETWORK_WIF_PREFIXES,
+    P2PKH_ADDRESS,
+    P2SH_ADDRESS,
+    P2WPKH_ADDRESS_V0,
+    P2WSH_ADDRESS_V0,
+    SIGHASH_ALL,
+)
+from litecoinutils.setup import get_network
+from litecoinutils.utils import encode_varint
 
 # ECDSA curve using secp256k1 is defined by: y**2 = x**3 + 7
 # This is done modulo p which (secp256k1) is:
@@ -60,11 +68,10 @@ _G = ellipticcurve.Point( _curve, _Gx, _Gy, _order )
 
 # method used by both PrivateKey and PublicKey - TODO clean - add in another module?
 def add_magic_prefix(message):
-    magic_prefix = b'\x19Litecoin Signed Message:\n'
-    message_size = len(message).to_bytes(1, byteorder='big')
-    message_encoded = message.encode('utf-8')
-    message_magic = magic_prefix + message_size + message_encoded
-    return message_magic
+    magic_prefix = b"\x19Litecoin Signed Message:\n"
+    message_size = encode_varint(len(message))
+    message_encoded = message.encode("utf-8")
+    return magic_prefix + message_size + message_encoded
 
 
 
