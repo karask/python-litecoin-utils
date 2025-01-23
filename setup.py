@@ -21,7 +21,7 @@ setup(name='litecoin-utils',
       keywords='litecoin library utilities tools',
       install_requires=[
           'base58check==1.0.2',
-          'ecdsa==0.17.0',
+          'ecdsa==0.19.0',
           'sympy==1.3',
           'python-bitcoinrpc==1.0'
       ],
