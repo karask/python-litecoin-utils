@@ -1,3 +1,6 @@
+THIS LIBRARY IS NOT SUPPORTED ANYMORE
+-------------------------------------
+
 python-litecoin-utils
 =====================
 
