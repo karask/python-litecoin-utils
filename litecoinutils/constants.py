@@ -25,9 +25,9 @@ NETWORK_P2PKH_PREFIXES = { 'mainnet': b'\x30',
                            'testnet': b'\x6f',
                            'regtest': b'\x6f' }
 
-NETWORK_P2SH_PREFIXES = { 'mainnet': b'\x05',
-                          'testnet': b'\xc4',
-                          'regtest': b'\xc4' }
+NETWORK_P2SH_PREFIXES = { 'mainnet': b'\x32',
+                          'testnet': b'\x3A',
+                          'regtest': b'\x3A' }
 
 NETWORK_SEGWIT_PREFIXES = { 'mainnet' : 'ltc',
                             'testnet' : 'tltc',
